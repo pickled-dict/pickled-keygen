@@ -1,3 +1,5 @@
+use crate::chars_options::CharsOptions;
+
 pub struct AvailableChars {
     pub chars: Vec<char>,
 }
@@ -14,11 +16,33 @@ pub struct AvailableCharsBuilder {
 }
 
 impl AvailableCharsBuilder {
+
+    #[allow(dead_code)]
     pub fn new() -> AvailableCharsBuilder {
         AvailableCharsBuilder { chars: vec![] }
     }
 
-    pub fn symbols(mut self) -> AvailableCharsBuilder {
+    pub fn from_options(&mut self, options: CharsOptions) -> &mut AvailableCharsBuilder {
+        if options.symbols {
+            self.symbols();
+        }
+
+        if options.numbers {
+            self.numbers();
+        }
+
+        if options.lower {
+            self.lowercase();
+        }
+
+        if options.upper {
+            self.uppercase();
+        }
+
+        self
+    }
+
+    pub fn symbols(&mut self) -> &mut AvailableCharsBuilder {
         let symbols = [
             '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';',
             '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
@@ -31,7 +55,7 @@ impl AvailableCharsBuilder {
         self
     }
 
-    pub fn numbers(mut self) -> AvailableCharsBuilder {
+    pub fn numbers(&mut self) -> &mut AvailableCharsBuilder {
         let mut numbers: [char; 10] = ['a'; 10];
 
         for (i, ch) in (b'0'..=b'9').enumerate() {
@@ -45,7 +69,7 @@ impl AvailableCharsBuilder {
         self
     }
 
-    pub fn lowercase(mut self) -> AvailableCharsBuilder {
+    pub fn lowercase(&mut self) -> &mut AvailableCharsBuilder {
         let mut lower: [char; 26] = ['a'; 26];
 
         for (i, ch) in (b'a'..=b'z').enumerate() {
@@ -59,7 +83,7 @@ impl AvailableCharsBuilder {
         self
     }
 
-    pub fn uppercase(mut self) -> AvailableCharsBuilder {
+    pub fn uppercase(&mut self) -> &mut AvailableCharsBuilder {
         let mut upper: [char; 26] = ['a'; 26];
 
         for (i, ch) in (b'A'..=b'Z').enumerate() {
@@ -73,7 +97,7 @@ impl AvailableCharsBuilder {
         self
     }
 
-    pub fn build(self) -> AvailableChars {
-        AvailableChars { chars: self.chars }
+    pub fn build(&mut self) -> AvailableChars {
+        AvailableChars { chars: self.chars.clone() }
     }
 }
