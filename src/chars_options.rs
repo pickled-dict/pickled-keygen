@@ -8,9 +8,6 @@ pub struct CharsOptions {
 
 impl CharsOptions {
     pub fn is_empty(self) -> bool {
-        self.numbers == false
-            && self.lower == false
-            && self.symbols == false
-            && self.upper == false
+        self.numbers == false && self.lower == false && self.symbols == false && self.upper == false
     }
 }

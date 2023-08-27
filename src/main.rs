@@ -57,7 +57,10 @@ fn main() {
     match options.is_empty() {
         true => print!(
             "{}",
-            generate_string(AvailableChars::builder().default_options().build(), args.count)
+            generate_string(
+                AvailableChars::builder().default_options().build(),
+                args.count
+            )
         ),
         false => print!(
             "{}",
