@@ -1,13 +1,13 @@
-use clap::Parser;
-use rand::seq::SliceRandom;
 use available_chars::AvailableChars;
 use chars_options::CharsOptions;
+use clap::Parser;
+use utils::generate_string;
 
 mod available_chars;
 mod chars_options;
+mod utils;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
-
 const ABOUT_STRING: &str = "Generate a random string for things like \
     secret keys and passwords.\nGives a 16 character key with \
     upper, lower, symbols, and numbers on by default";
@@ -42,26 +42,29 @@ struct Args {
     count: usize,
 }
 
-fn generate_string(available: AvailableChars, size: usize) -> String {
-    (0..size).map(|_| available.chars.choose(&mut rand::thread_rng()).unwrap())
-        .collect()
-}
-
 fn main() {
+    // initialize clap arg parser
     let args = Args::parse();
 
+    // get string character settings from args
     let options = CharsOptions {
         upper: args.upper,
         lower: args.lower,
         symbols: args.symbols,
-        numbers: args.numbers
+        numbers: args.numbers,
     };
 
-    if options.numbers == false && options.lower == false && options.symbols == false && options.upper == false {
-        let deluxe = AvailableChars::builder().uppercase().lowercase().symbols().numbers().build();
-        print!("{}", generate_string(deluxe, args.count));
-    } else {
-        let options_available = AvailableChars::builder().from_options(options).build();
-        print!("{}", generate_string(options_available, args.count));
+    match options.is_empty() {
+        true => print!(
+            "{}",
+            generate_string(AvailableChars::builder().default_options().build(), args.count)
+        ),
+        false => print!(
+            "{}",
+            generate_string(
+                AvailableChars::builder().from_options(options).build(),
+                args.count
+            )
+        ),
     }
 }

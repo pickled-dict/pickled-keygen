@@ -16,10 +16,13 @@ pub struct AvailableCharsBuilder {
 }
 
 impl AvailableCharsBuilder {
-
     #[allow(dead_code)]
     pub fn new() -> AvailableCharsBuilder {
         AvailableCharsBuilder { chars: vec![] }
+    }
+
+    pub fn default_options(&mut self) -> &mut AvailableCharsBuilder {
+        self.symbols().numbers().lowercase().uppercase()
     }
 
     pub fn from_options(&mut self, options: CharsOptions) -> &mut AvailableCharsBuilder {
@@ -44,10 +47,8 @@ impl AvailableCharsBuilder {
 
     pub fn symbols(&mut self) -> &mut AvailableCharsBuilder {
         let symbols = [
-            '!', '"', '#', '$', '%', '&', '\'', '(',
-            ')', '*', '+', ',', '-', '.', '/', ':',
-            ';', '<', '=', '>', '?', '@', '[', '\\',
-            ']', '^', '_', '`', '{', '|', '}', '~',
+            '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';',
+            '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~',
         ];
 
         symbols.iter().for_each(|&s| {
@@ -100,6 +101,8 @@ impl AvailableCharsBuilder {
     }
 
     pub fn build(&mut self) -> AvailableChars {
-        AvailableChars { chars: self.chars.clone() }
+        AvailableChars {
+            chars: self.chars.clone(),
+        }
     }
 }
