@@ -6,6 +6,8 @@ use chars_options::CharsOptions;
 mod available_chars;
 mod chars_options;
 
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 const ABOUT_STRING: &str = "Generate a random string for things like \
     secret keys and passwords.\nGives a 16 character key with \
     upper, lower, symbols, and numbers on by default";
@@ -13,7 +15,7 @@ const ABOUT_STRING: &str = "Generate a random string for things like \
 #[derive(Parser, Debug)]
 #[command(name = "Pickled Keygen")]
 #[command(author = "pickled-dict")]
-#[command(version = "0.1.0")]
+#[command(version = VERSION)]
 #[command(
     about = ABOUT_STRING,
     long_about=None
